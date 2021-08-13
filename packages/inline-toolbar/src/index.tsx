@@ -39,14 +39,27 @@ export default (
     isVisible: false,
   });
 
+  let _getReadOnly: (() => boolean) | undefined;
+
   const { theme = defaultTheme } = config;
 
   const InlineToolbar = (props: ToolbarProps): ReactElement => (
-    <Toolbar {...props} store={store} theme={theme} />
+    <Toolbar
+      {...props}
+      store={store}
+      getReadOnly={_getReadOnly}
+      theme={theme}
+    />
   );
 
   return {
-    initialize: ({ getEditorState, setEditorState, getEditorRef }) => {
+    initialize: ({
+      getEditorState,
+      setEditorState,
+      getEditorRef,
+      getReadOnly,
+    }) => {
+      _getReadOnly = getReadOnly;
       store.updateItem('getEditorState', getEditorState);
       store.updateItem('setEditorState', setEditorState);
       store.updateItem('getEditorRef', getEditorRef);
@@ -60,4 +73,4 @@ export default (
   };
 };
 
-export { Separator };
+export { Separator, defaultTheme };

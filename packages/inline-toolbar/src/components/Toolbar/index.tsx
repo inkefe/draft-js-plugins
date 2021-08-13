@@ -30,7 +30,9 @@ interface ToolbarProps {
   store: InlineToolbarPluginStore;
   children?: FC<ToolbarChildrenProps>;
   isVisible?: boolean;
+  getReadOnly?(): boolean;
   position?: { top: number; left: number };
+  editorRoot?: HTMLElement | null;
   overrideContent?: ComponentType<ToolbarChildrenProps>;
   theme: InlineToolbarPluginTheme;
 }
@@ -48,6 +50,8 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     ),
   };
 
+  editorRoot: HTMLElement | null = null;
+
   state: ToolbarProps = {
     isVisible: false,
     position: undefined,
@@ -63,11 +67,21 @@ export default class Toolbar extends React.Component<ToolbarProps> {
 
   UNSAFE_componentWillMount(): void {
     this.props.store.subscribeToItem('selection', this.onSelectionChanged);
+    // document.body.addEventListener('mousedown', this.clearSelect)
   }
 
   componentWillUnmount(): void {
     this.props.store.unsubscribeFromItem('selection', this.onSelectionChanged);
+    // document.body.removeEventListener('mousedown', this.clearSelect)
   }
+
+  // clearSelect = (evt: MouseEvent): void => {
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   const target: any = evt.target
+  //   if(!this.toolbar?.contains(target)){
+  //     this.setState({ isVisible: false });
+  //   }
+  // }
 
   /**
    * This can be called by a child in order to render custom content instead
@@ -101,6 +115,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
       while (editorRoot.className.indexOf('DraftEditor-root') === -1) {
         editorRoot = editorRoot.parentNode as HTMLElement;
       }
+      this.editorRoot = editorRoot;
       const editorRootRect = editorRoot.getBoundingClientRect();
 
       const parentWindow =
@@ -110,7 +125,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
 
       // The toolbar shouldn't be positioned directly on top of the selected text,
       // but rather with a small offset so the caret doesn't overlap with the text.
-      const extraTopOffset = -5;
+      const extraTopOffset = -8;
 
       const position = {
         top:
@@ -128,23 +143,31 @@ export default class Toolbar extends React.Component<ToolbarProps> {
   };
 
   getStyle(): CSSProperties {
-    const { store } = this.props;
+    const { store, getReadOnly } = this.props;
     const { overrideContent, position } = this.state;
     const selection = store.getItem('getEditorState')!().getSelection();
+    const windowSelection = window.getSelection();
     // overrideContent could for example contain a text input, hence we always show overrideContent
     // TODO: Test readonly mode and possibly set isVisible to false if the editor is readonly
     const isVisible =
-      (!selection.isCollapsed() && selection.getHasFocus()) || overrideContent;
+      (!selection.isCollapsed() &&
+        !windowSelection?.isCollapsed &&
+        !getReadOnly?.() &&
+        windowSelection?.focusNode &&
+        this.editorRoot?.contains(windowSelection?.focusNode)) ||
+      overrideContent;
     const style: CSSProperties = { ...position! };
 
     if (isVisible) {
-      style.visibility = 'visible';
+      style.opacity = 1;
       style.transform = 'translate(-50%) scale(1)';
-      style.transition = 'transform 0.15s cubic-bezier(.3,1.2,.2,1)';
+      style.pointerEvents = 'auto';
     } else {
       style.transform = 'translate(-50%) scale(0)';
-      style.visibility = 'hidden';
+      style.opacity = 0.5;
+      style.pointerEvents = 'none';
     }
+    style.transition = 'transform 0.15s cubic-bezier(.3,1.2,.2,1)';
 
     return style;
   }
