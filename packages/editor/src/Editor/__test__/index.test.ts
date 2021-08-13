@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import { EditorState, DefaultDraftBlockRenderMap, Editor } from 'draft-js';
+import { EditorState, DefaultDraftBlockRenderMap, Editor } from 'ik-draft-js';
 import { Map } from 'immutable';
 import sinon from 'sinon';
 import PluginEditor, { createEditorStateWithText } from '../../index';

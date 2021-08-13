@@ -1,4 +1,4 @@
-import Draft from 'draft-js';
+import Draft from 'ik-draft-js';
 import MultiDecorator from '../MultiDecorator';
 
 describe('MultiDecorator', () => {

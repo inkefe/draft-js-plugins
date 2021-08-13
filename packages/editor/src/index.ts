@@ -10,7 +10,7 @@ import {
   DraftStyleMap,
   EditorState,
   SelectionState,
-} from 'draft-js';
+} from 'ik-draft-js';
 import { CSSProperties, KeyboardEvent, SyntheticEvent } from 'react';
 import createEditorStateWithTextFn from './utils/createEditorStateWithText';
 import composeDecoratorsFn from './utils/composeDecorators';

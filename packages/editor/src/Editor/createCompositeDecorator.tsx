@@ -4,7 +4,7 @@
 
 import React, { ReactElement } from 'react';
 import { List } from 'immutable';
-import { CompositeDecorator, DraftDecorator, EditorState } from 'draft-js';
+import { CompositeDecorator, DraftDecorator, EditorState } from 'ik-draft-js';
 
 export default function createCompositeDecorator(
   decorators: Immutable.List<DraftDecorator>,

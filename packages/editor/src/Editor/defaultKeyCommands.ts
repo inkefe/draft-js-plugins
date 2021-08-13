@@ -3,7 +3,7 @@ import {
   DraftHandleValue,
   EditorState,
   RichUtils,
-} from 'draft-js';
+} from 'ik-draft-js';
 
 export function handleKeyCommand(
   command: DraftEditorCommand | string,

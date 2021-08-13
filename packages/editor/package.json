@@ -37,6 +37,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "ik-draft-js": "git+ssh://git@code.inke.cn:opd/fe-aws/modules/ik-draft-js.git",
     "immutable": "~3.7.4",
     "prop-types": "^15.5.8"
   },

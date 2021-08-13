@@ -11,7 +11,8 @@ import {
   DraftBlockRenderMap,
   CompositeDecorator,
   DraftDecorator,
-} from 'draft-js';
+} from 'ik-draft-js';
+
 import { Map } from 'immutable';
 import moveSelectionToEnd from './moveSelectionToEnd';
 import resolveDecorators from './resolveDecorators';
@@ -181,7 +182,7 @@ class PluginEditor extends Component<PluginEditorProps> {
   };
 
   //the editors editor html element is not supported in the draft js typescript interface
-  getEditorRef = (): EditorRef => (this.editor as unknown) as EditorRef;
+  getEditorRef = (): EditorRef => this.editor as unknown as EditorRef;
 
   getEditorState = (): EditorState => this.props.editorState;
 

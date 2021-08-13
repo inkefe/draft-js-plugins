@@ -1,4 +1,4 @@
-import { CompositeDecorator, DraftDecorator, EditorState } from 'draft-js';
+import { CompositeDecorator, DraftDecorator, EditorState } from 'ik-draft-js';
 import { List } from 'immutable';
 import { PluginEditorProps } from '.';
 import createCompositeDecorator from './createCompositeDecorator';
@@ -29,9 +29,9 @@ export default function resolveDecorators(
 ): MultiDecorator {
   const decorators = getDecoratorsFromProps(props);
   const compositeDecorator = createCompositeDecorator(
-    decorators.filter((decorator) => !decoratorIsCustom(decorator!)) as List<
-      DraftDecorator
-    >,
+    decorators.filter(
+      (decorator) => !decoratorIsCustom(decorator!)
+    ) as List<DraftDecorator>,
     getEditorState,
     onChange
   );

@@ -4,7 +4,7 @@ import {
   DraftHandleValue,
   DraftInlineStyle,
   EditorProps,
-} from 'draft-js';
+} from 'ik-draft-js';
 import { CSSProperties, KeyboardEvent } from 'react';
 import { EditorCommand, EditorPlugin, PluginFunctions } from '..';
 

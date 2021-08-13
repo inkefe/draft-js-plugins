@@ -1,4 +1,4 @@
-import { DraftEditorCommand, getDefaultKeyBinding } from 'draft-js';
+import { DraftEditorCommand, getDefaultKeyBinding } from 'ik-draft-js';
 import { KeyboardEvent } from 'react';
 
 export function keyBindingFn(event: KeyboardEvent): DraftEditorCommand | null {
