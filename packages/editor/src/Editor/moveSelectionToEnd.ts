@@ -1,4 +1,4 @@
-import { EditorState, SelectionState } from 'ik-draft-js';
+import { EditorState, SelectionState } from 'draft-js';
 
 /**
  * Returns a new EditorState where the Selection is at the end.

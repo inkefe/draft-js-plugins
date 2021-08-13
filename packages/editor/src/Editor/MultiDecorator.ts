@@ -1,4 +1,4 @@
-import { CompositeDecorator, ContentBlock, ContentState } from 'ik-draft-js';
+import { CompositeDecorator, ContentBlock, ContentState } from 'draft-js';
 import Immutable from 'immutable';
 
 const KEY_SEPARATOR = '-';
