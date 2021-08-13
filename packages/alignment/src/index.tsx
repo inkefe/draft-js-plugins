@@ -13,6 +13,7 @@ import createDecorator from './createDecorator';
 import AlignmentTool from './AlignmentTool';
 import { defaultTheme, AlignmentPluginTheme } from './theme';
 
+export { defaultTheme };
 const createSetAlignment =
   (
     contentBlock: ContentBlock,
