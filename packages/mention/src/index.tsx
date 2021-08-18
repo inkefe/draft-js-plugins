@@ -55,6 +55,7 @@ export interface MentionPluginStore {
   register(offsetKey: string): void;
   updatePortalClientRect(offsetKey: string, funct: ClientRectFunction): void;
   unregister(offsetKey: string): void;
+  clearRegister(): void;
   getIsOpened(): boolean;
   setIsOpened(nextIsOpened: boolean): void;
 
@@ -129,6 +130,10 @@ export default (
     unregister: (offsetKey) => {
       searches = searches.delete(offsetKey);
       clientRectFunctions = clientRectFunctions.delete(offsetKey);
+    },
+
+    clearRegister: () => {
+      searches = searches.clear();
     },
 
     getIsOpened: () => isOpened,
@@ -218,9 +223,7 @@ export default (
     keyBindingFn: (keyboardEvent) =>
       callbacks.keyBindingFn && callbacks.keyBindingFn(keyboardEvent),
     handleReturn: (keyboardEvent) =>
-      callbacks.handleReturn
-        ? callbacks.handleReturn(keyboardEvent)
-        : undefined,
+      callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),
     onChange: (editorState) => {
       if (callbacks.onChange) {
         return callbacks.onChange(editorState);

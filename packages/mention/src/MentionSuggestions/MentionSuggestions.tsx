@@ -153,6 +153,7 @@ export class MentionSuggestions extends Component<MentionSuggestionsProps> {
     );
 
     if (!triggerForMention) {
+      this.props.store.clearRegister();
       return removeList();
     }
 
