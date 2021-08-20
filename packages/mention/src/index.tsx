@@ -55,7 +55,7 @@ export interface MentionPluginStore {
   register(offsetKey: string): void;
   updatePortalClientRect(offsetKey: string, funct: ClientRectFunction): void;
   unregister(offsetKey: string): void;
-  clearRegister(): void;
+  clearRegister(offsetKey?: string): void;
   getIsOpened(): boolean;
   setIsOpened(nextIsOpened: boolean): void;
 
@@ -132,8 +132,12 @@ export default (
       clientRectFunctions = clientRectFunctions.delete(offsetKey);
     },
 
-    clearRegister: () => {
+    clearRegister: (offsetKey = '') => {
+      const isSearchesKey: boolean = searches.has(offsetKey);
       searches = searches.clear();
+      if (isSearchesKey) {
+        searches = searches.set(offsetKey, offsetKey);
+      }
     },
 
     getIsOpened: () => isOpened,

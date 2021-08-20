@@ -153,13 +153,15 @@ export class MentionSuggestions extends Component<MentionSuggestionsProps> {
     );
 
     if (!triggerForMention) {
-      this.props.store.clearRegister();
+      this.props.store.clearRegister(this.activeOffsetKey);
       return removeList();
     }
 
     const lastActiveOffsetKey = this.activeOffsetKey;
     this.activeOffsetKey = triggerForMention.activeOffsetKey;
-
+    if (lastActiveOffsetKey !== this.activeOffsetKey) {
+      this.props.store.clearRegister(this.activeOffsetKey);
+    }
     this.onSearchChange(
       editorState,
       editorState.getSelection(),
