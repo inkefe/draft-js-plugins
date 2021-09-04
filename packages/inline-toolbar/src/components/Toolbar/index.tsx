@@ -8,7 +8,7 @@ import {
   CodeButton,
   DraftJsButtonTheme,
 } from '@draft-js-plugins/buttons';
-import { InlineToolbarPluginStore } from '../../';
+import { InlineToolbarPluginStore, InlineToolbarEventStore } from '../../';
 import { InlineToolbarPluginTheme } from '../../theme';
 
 interface OverrideContentProps {
@@ -28,6 +28,7 @@ export interface ToolbarChildrenProps {
 
 interface ToolbarProps {
   store: InlineToolbarPluginStore;
+  eventStore: InlineToolbarEventStore;
   children?: FC<ToolbarChildrenProps>;
   isVisible?: boolean;
   getReadOnly?(): boolean;
@@ -65,22 +66,24 @@ export default class Toolbar extends React.Component<ToolbarProps> {
   } as ToolbarProps;
   toolbar: HTMLDivElement | null = null;
 
-  UNSAFE_componentWillMount(): void {
+  componentDidMount(): void {
     this.props.store.subscribeToItem('selection', this.onSelectionChanged);
-    document.body.addEventListener('mousedown', this.clearSelect);
+    this.props.eventStore.subscribeToItem('mousedown', this.clearSelect);
   }
 
   componentWillUnmount(): void {
     this.props.store.unsubscribeFromItem('selection', this.onSelectionChanged);
-    document.body.removeEventListener('mousedown', this.clearSelect);
+    this.props.eventStore.unsubscribeFromItem('mousedown', this.clearSelect);
   }
 
-  clearSelect = (evt: MouseEvent): void => {
+  clearSelect = (evt: MouseEvent | undefined): MouseEvent | undefined => {
+    if (!evt) return undefined;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const target: any = evt.target;
     if (!this.toolbar?.contains(target)) {
       this.setState({ isVisible: false });
     }
+    return evt;
   };
 
   /**

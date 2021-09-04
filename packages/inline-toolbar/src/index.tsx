@@ -31,6 +31,15 @@ export interface StoreItemMap {
 }
 
 export type InlineToolbarPluginStore = Store<StoreItemMap>;
+export interface EventStoreItemMap {
+  mousedown?: MouseEvent | undefined;
+}
+export type InlineToolbarEventStore = Store<EventStoreItemMap>;
+const _eventStore = createStore<EventStoreItemMap>({});
+const onMouseDown = (e: MouseEvent): void =>
+  _eventStore.updateItem('mousedown', e);
+
+document.body.addEventListener('mousedown', onMouseDown);
 
 export default (
   config: InlineToolbarPluginConfig = {}
@@ -49,6 +58,7 @@ export default (
       store={store}
       getReadOnly={_getReadOnly}
       theme={theme}
+      eventStore={_eventStore}
     />
   );
 
@@ -63,6 +73,9 @@ export default (
       store.updateItem('getEditorState', getEditorState);
       store.updateItem('setEditorState', setEditorState);
       store.updateItem('getEditorRef', getEditorRef);
+    },
+    willUnmount: () => {
+      // document.body.removeEventListener('mousedown', onMouseDown);
     },
     // Re-Render the text-toolbar on selection change
     onChange: (editorState) => {

@@ -2,7 +2,7 @@ import { createStore } from '@draft-js-plugins/utils';
 import { EditorState } from 'draft-js';
 import React, { ReactElement, useEffect } from 'react';
 import { render } from '@testing-library/react';
-import { StoreItemMap } from '../../../';
+import { StoreItemMap, EventStoreItemMap } from '../../../';
 import Toolbar, { ToolbarChildrenProps } from '../index';
 
 jest.useFakeTimers();
@@ -35,9 +35,10 @@ describe('Toolbar', () => {
           }),
         } as EditorState),
     });
+    const eventStore = createStore<EventStoreItemMap>({});
 
     const { container } = render(
-      <Toolbar store={store} theme={theme}>
+      <Toolbar store={store} theme={theme} eventStore={eventStore}>
         {(externalProps) => <Child {...externalProps} />}
       </Toolbar>
     );
