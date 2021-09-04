@@ -67,21 +67,21 @@ export default class Toolbar extends React.Component<ToolbarProps> {
 
   UNSAFE_componentWillMount(): void {
     this.props.store.subscribeToItem('selection', this.onSelectionChanged);
-    // document.body.addEventListener('mousedown', this.clearSelect)
+    document.body.addEventListener('mousedown', this.clearSelect);
   }
 
   componentWillUnmount(): void {
     this.props.store.unsubscribeFromItem('selection', this.onSelectionChanged);
-    // document.body.removeEventListener('mousedown', this.clearSelect)
+    document.body.removeEventListener('mousedown', this.clearSelect);
   }
 
-  // clearSelect = (evt: MouseEvent): void => {
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   const target: any = evt.target
-  //   if(!this.toolbar?.contains(target)){
-  //     this.setState({ isVisible: false });
-  //   }
-  // }
+  clearSelect = (evt: MouseEvent): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const target: any = evt.target;
+    if (!this.toolbar?.contains(target)) {
+      this.setState({ isVisible: false });
+    }
+  };
 
   /**
    * This can be called by a child in order to render custom content instead
@@ -138,11 +138,11 @@ export default class Toolbar extends React.Component<ToolbarProps> {
           (selectionRect.left - editorRootRect.left) +
           selectionRect.width / 2,
       };
-      this.setState({ position });
+      this.setState({ position, isVisible: undefined });
     });
   };
 
-  getStyle(): CSSProperties {
+  getStyle(_isVisible: boolean | undefined): CSSProperties {
     const { store, getReadOnly } = this.props;
     const { overrideContent, position } = this.state;
     const selection = store.getItem('getEditorState')!().getSelection();
@@ -150,14 +150,15 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     // overrideContent could for example contain a text input, hence we always show overrideContent
     // TODO: Test readonly mode and possibly set isVisible to false if the editor is readonly
     const isVisible =
-      (!selection.isCollapsed() &&
-        !windowSelection?.isCollapsed &&
-        !getReadOnly?.() &&
-        windowSelection?.focusNode &&
-        this.editorRoot?.contains(windowSelection?.focusNode)) ||
-      overrideContent;
+      _isVisible !== undefined
+        ? _isVisible
+        : (!selection.isCollapsed() &&
+            !windowSelection?.isCollapsed &&
+            !getReadOnly?.() &&
+            windowSelection?.focusNode &&
+            this.editorRoot?.contains(windowSelection?.focusNode)) ||
+          overrideContent;
     const style: CSSProperties = { ...position! };
-
     if (isVisible) {
       style.opacity = 1;
       style.transform = 'translate(-50%) scale(1)';
@@ -174,7 +175,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
 
   render(): ReactElement {
     const { theme, store } = this.props;
-    const { overrideContent: OverrideContent } = this.state;
+    const { overrideContent: OverrideContent, isVisible } = this.state;
     const childrenProps: ToolbarChildrenProps = {
       theme: theme.buttonStyles,
       getEditorState: store.getItem('getEditorState')!,
@@ -185,7 +186,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     return (
       <div
         className={theme.toolbarStyles.toolbar}
-        style={this.getStyle()}
+        style={this.getStyle(isVisible)}
         ref={(element) => {
           this.toolbar = element;
         }}

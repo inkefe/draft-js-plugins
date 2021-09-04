@@ -6,6 +6,7 @@ import React, {
   useState,
   MutableRefObject,
   useMemo,
+  useEffect,
   Ref,
 } from 'react';
 import { ResizeablePluginConfig, ResizeablePluginStore, BlockProps } from '.';
@@ -63,6 +64,7 @@ export default ({ config, store }: DecoratorProps) =>
           horizontal = 'relative',
           initialWidth,
           initialHeight,
+          setWraperFunc,
         } = config;
         const [clicked, setClicked] = useState(false);
         const [width, setWidth] = useState<number>(0);
@@ -70,8 +72,14 @@ export default ({ config, store }: DecoratorProps) =>
         const [hoverPosition, setHoverPosition] = useState<
           Record<string, boolean>
         >({});
-        const wrapper = useRef<HTMLElement | null>();
 
+        const wrapper = useRef<HTMLElement | null>();
+        useEffect(() => {
+          const onChangeCallBack = (dom?: HTMLElement): void => {
+            wrapper.current = dom;
+          };
+          setWraperFunc?.(onChangeCallBack);
+        }, [wrapper]);
         const mouseLeave = useCallback(() => {
           if (!clicked) {
             setHoverPosition({});
@@ -114,7 +122,7 @@ export default ({ config, store }: DecoratorProps) =>
               return oldHoverPosition;
             });
           },
-          [vertical, horizontal, isResizable]
+          [vertical, horizontal, isResizable, wrapper.current]
         );
 
         const mouseDown = useCallback(

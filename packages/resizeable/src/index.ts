@@ -12,13 +12,16 @@ export interface BlockProps {
   setResizeData(value: { width: number; height: number }): void;
   resizeData: { width: number; height: number };
 }
-
+export interface hoverChangeCallBack {
+  (el: HTMLElement): void;
+}
 export interface ResizeablePluginConfig {
   blockProps?: BlockProps;
   horizontal?: ScaleType;
   vertical?: ScaleType;
   initialWidth?: string;
   initialHeight?: string;
+  setWraperFunc?(fn: hoverChangeCallBack): void;
 }
 
 export interface ResizeablePluginStore {
