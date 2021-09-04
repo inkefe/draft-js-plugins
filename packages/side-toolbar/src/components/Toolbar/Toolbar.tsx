@@ -77,7 +77,7 @@ export default function Toolbar({
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
     null
   );
-  const [targetKey, setTargetKey] = useState<string>('');
+  const [targetKeys, setTargetKeys] = useState<Array<string | undefined>>([]);
   const [buttonReferenceElement, setButtonReferenceElement] =
     useState<HTMLElement | null>(null);
 
@@ -85,10 +85,18 @@ export default function Toolbar({
     useEffect(() => {
       const onChangeCallBack = (dom?: HTMLDivElement): void => {
         setReferenceElement(dom || null);
-        setTargetKey(
-          (dom ? dom.getAttribute('data-offset-key')?.split('-')?.[0] : '') ||
-            ''
-        );
+        if (dom?.tagName === 'UL' || dom?.tagName === 'OL') {
+          setTargetKeys(
+            Array.from(dom.querySelectorAll('li[data-offset-key]'))
+              .map((li) => li.getAttribute('data-offset-key')?.split('-')[0])
+              .filter(Boolean)
+          );
+        } else
+          setTargetKeys(
+            [dom?.getAttribute('data-offset-key')?.split('-')?.[0]].filter(
+              Boolean
+            )
+          );
         if (!dom) setShow(false);
       };
       onHoverChange(onChangeCallBack);
@@ -99,7 +107,7 @@ export default function Toolbar({
       if (!selection.getHasFocus()) {
         setReferenceElement(null);
         setShow(false);
-        setTargetKey('');
+        setTargetKeys([]);
         return;
       }
 
@@ -115,7 +123,7 @@ export default function Toolbar({
         const node = document.querySelectorAll<HTMLDivElement>(
           `[data-offset-key="${offsetKey}"]`
         )[0];
-        setTargetKey(currentKey);
+        setTargetKeys([currentKey]);
         setReferenceElement(node);
       }, 0);
     }, []);
@@ -128,7 +136,10 @@ export default function Toolbar({
     }, [store]);
   }
 
-  const getTargetKey = useCallback((): string => targetKey, [targetKey]);
+  const getTargetKeys = useCallback(
+    (): Array<string | undefined> => targetKeys,
+    [targetKeys]
+  );
 
   // if (referenceElement === null) {
   //   //do not show popover if reference element is not there
@@ -152,7 +163,7 @@ export default function Toolbar({
           <SideToolbarButton
             getEditorState={store.getItem('getEditorState')!}
             setEditorState={store.getItem('setEditorState')!}
-            getTargetKey={getTargetKey}
+            getTargetKeys={getTargetKeys}
             className={theme.blockTypeSelectStyles?.blockType}
           />
         </div>
@@ -160,7 +171,7 @@ export default function Toolbar({
       <BlockTypeSelect
         getEditorState={store.getItem('getEditorState')!}
         setEditorState={store.getItem('setEditorState')!}
-        getTargetKey={getTargetKey}
+        getTargetKeys={getTargetKeys}
         theme={theme}
         childNodes={children}
         referenceElement={buttonReferenceElement}

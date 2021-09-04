@@ -17,7 +17,7 @@ import { PopperOptions } from '../..';
 export interface BlockTypeSelectChildProps {
   theme: DraftJsButtonTheme;
   setVisible(visible: boolean): void;
-  getTargetKey(): string;
+  getTargetKeys(): Array<string | undefined>;
   getEditorState(): EditorState;
   setEditorState(state: EditorState): void;
 }
@@ -30,7 +30,7 @@ interface BlockTypeSelectProps {
   theme: SideToolbarPluginTheme;
   getEditorState(): EditorState;
   setEditorState(state: EditorState): void;
-  getTargetKey(): string;
+  getTargetKeys(): Array<string | undefined>;
   childNodes: FC<BlockTypeSelectChildProps>;
   referenceElement: HTMLElement | null;
   rootReferenceElement: HTMLElement | null;
@@ -61,7 +61,7 @@ export default function BlockTypeSelect({
   childNodes,
   referenceElement,
   show,
-  getTargetKey,
+  getTargetKeys,
   rootReferenceElement,
   createBlockTypeSelectPopperOptions = createDefaultPopperOptions,
 }: BlockTypeSelectProps): ReactElement {
@@ -111,7 +111,7 @@ export default function BlockTypeSelect({
           getEditorState,
           setEditorState,
           setVisible,
-          getTargetKey,
+          getTargetKeys,
           theme: theme.buttonStyles!,
         })}
         <div

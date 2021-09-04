@@ -3,7 +3,7 @@ import { EditorState } from 'draft-js';
 
 export interface SideToolbarButtonProps {
   className?: string;
-  getTargetKey(): string;
+  getTargetKeys(): Array<string | undefined>;
   getEditorState(): EditorState;
   setEditorState(state: EditorState): void;
 }
