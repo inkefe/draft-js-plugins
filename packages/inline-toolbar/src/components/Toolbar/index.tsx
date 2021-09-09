@@ -8,6 +8,7 @@ import {
   CodeButton,
   DraftJsButtonTheme,
 } from '@draft-js-plugins/buttons';
+import { throttle } from 'lodash';
 import { InlineToolbarPluginStore, InlineToolbarEventStore } from '../../';
 import { InlineToolbarPluginTheme } from '../../theme';
 
@@ -54,7 +55,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
   editorRoot: HTMLElement | null = null;
 
   state: ToolbarProps = {
-    isVisible: false,
+    isVisible: undefined,
     position: undefined,
 
     /**
@@ -76,15 +77,20 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     this.props.eventStore.unsubscribeFromItem('mousedown', this.clearSelect);
   }
 
-  clearSelect = (evt: MouseEvent | undefined): MouseEvent | undefined => {
-    if (!evt) return undefined;
+  clearSelect = throttle((evt: MouseEvent | undefined): void => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const target: any = evt.target;
-    if (!this.toolbar?.contains(target)) {
-      this.setState({ isVisible: false });
-    }
-    return evt;
-  };
+    (window as any).requestIdleCallback?.(
+      (): void => {
+        if (!evt || this.state.isVisible === false) return;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const target: any = evt.target;
+        if (!this.toolbar?.contains(target)) {
+          this.setState({ isVisible: false });
+        }
+      },
+      { timeout: (1 + Math.random()) * 1200 }
+    );
+  }, 300);
 
   /**
    * This can be called by a child in order to render custom content instead

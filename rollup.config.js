@@ -40,12 +40,7 @@ export default [
           [
             'babel-plugin-transform-rename-import',
             {
-              replacements: [
-                {
-                  original: 'lodash',
-                  replacement: 'lodash-es',
-                },
-              ],
+              replacements: [],
             },
           ],
         ],
