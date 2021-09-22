@@ -2,6 +2,7 @@ import React, { ComponentType, FC, ReactElement } from 'react';
 import { EditorPlugin } from '@draft-js-plugins/editor';
 import { EditorState, SelectionState } from 'draft-js';
 import { createStore, Store } from '@draft-js-plugins/utils';
+import { debounce } from 'lodash';
 import Toolbar, { ToolbarChildrenProps } from './components/Toolbar';
 import Separator from './components/Separator';
 import { defaultTheme, InlineToolbarPluginTheme } from './theme';
@@ -12,6 +13,7 @@ export interface InlineToolbarPluginConfig {
 
 export interface ToolbarProps {
   children?: FC<ToolbarChildrenProps>;
+  style?: React.CSSProperties;
   overrideContent?: ComponentType<ToolbarChildrenProps>;
 }
 
@@ -32,13 +34,19 @@ export interface StoreItemMap {
 
 export type InlineToolbarPluginStore = Store<StoreItemMap>;
 export interface EventStoreItemMap {
-  mousedown?: MouseEvent | undefined;
+  mousedown?: EventTarget | null;
 }
 export type InlineToolbarEventStore = Store<EventStoreItemMap>;
 const _eventStore = createStore<EventStoreItemMap>({});
-const onMouseDown = (e: MouseEvent): void =>
-  _eventStore.updateItem('mousedown', e);
-
+const onMouseDown = debounce(
+  (e: MouseEvent): void => {
+    const targert: EventTarget | null = e.target;
+    if (window.getSelection()?.isCollapsed) return;
+    _eventStore.updateItem('mousedown', targert);
+  },
+  400,
+  { leading: true, trailing: false }
+);
 document.body.addEventListener('mousedown', onMouseDown);
 
 export default (

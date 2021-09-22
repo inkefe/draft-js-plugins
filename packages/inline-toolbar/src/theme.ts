@@ -52,6 +52,7 @@ const toolbarStyles = {
     box-shadow: 0px 1px 3px 0px rgba(220, 220, 220, 1);
     z-index: 2;
     box-sizing: border-box;
+    transition: transform 0.15s cubic-bezier(0.3, 1.2, 0.2, 1);
     &:after,
     &:before {
       top: 100%;
