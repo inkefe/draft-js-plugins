@@ -49,14 +49,14 @@ const Entry = ({
   const mouseDown = useRef(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isFocused) {
-      //delay the scrolling as the popup needs some time for positioning
-      requestAnimationFrame(() =>
-        ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      );
-    }
-  }, [isFocused]);
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     //delay the scrolling as the popup needs some time for positioning
+  //     requestAnimationFrame(() =>
+  //       ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  //     );
+  //   }
+  // }, [isFocused]);
 
   useEffect(() => {
     mouseDown.current = false;
