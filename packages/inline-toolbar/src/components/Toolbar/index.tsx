@@ -19,7 +19,7 @@ interface OverrideContentProps {
 
 export interface ToolbarChildrenProps {
   theme: DraftJsButtonTheme;
-  // isVisible: boolean;
+  closeToolBar: () => void;
   getEditorState: () => EditorState;
   setEditorState: (editorState: EditorState) => void;
   onOverrideContent: (
@@ -90,16 +90,20 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const _target: any = target;
     if (!toolbar.contains(_target)) {
-      this.setState({
-        style: {
-          ...this.position,
-          transform: 'translate(-50%) scale(0)',
-          opacity: 0.5,
-          pointerEvents: 'none',
-        },
-      });
-      this.isVisible = false;
+      this.closeToolBar();
     }
+  };
+
+  closeToolBar = (): void => {
+    this.setState({
+      style: {
+        ...this.position,
+        transform: 'translate(-50%) scale(0)',
+        opacity: 0.5,
+        pointerEvents: 'none',
+      },
+    });
+    this.isVisible = false;
   };
 
   /**
@@ -196,6 +200,7 @@ export default class Toolbar extends React.Component<ToolbarProps> {
     const { overrideContent: OverrideContent, style } = this.state;
     const childrenProps: ToolbarChildrenProps = {
       theme: theme.buttonStyles,
+      closeToolBar: this.closeToolBar,
       getEditorState: store.getItem('getEditorState')!,
       setEditorState: store.getItem('setEditorState')!,
       onOverrideContent: this.onOverrideContent,
