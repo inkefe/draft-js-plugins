@@ -13,10 +13,11 @@ const babelOptions = {
   extensions,
   babelHelpers: 'bundled',
 };
+const jsInput = existsSync('./src/index.js') ? './src/index.js' : input;
 
 export default [
   {
-    input,
+    input: jsInput,
     output: {
       format: 'cjs',
       file: './lib/index.cjs.js',
@@ -26,7 +27,7 @@ export default [
     plugins: [nodeResolve({ extensions }), babel(babelOptions)],
   },
   {
-    input,
+    input: jsInput,
     output: {
       format: 'esm',
       file: './lib/index.esm.js',

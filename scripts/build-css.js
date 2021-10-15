@@ -8,7 +8,7 @@ const root = process.argv[2];
 const libCss = path.join(root, 'lib-css');
 
 child_process.execSync(
-  `yarn linaria "${path.join(root, 'src/**/*.{ts,tsx}')}" -o ${libCss}`,
+  `yarn linaria "${path.join(root, 'src/**/*.{js,ts,tsx}')}" -o ${libCss}`,
   { cwd: path.resolve('..'), stdio: 'inherit' }
 );
 
