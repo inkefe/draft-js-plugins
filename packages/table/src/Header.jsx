@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import { grey } from './colors';
 // import ArrowUpIcon from './img/ArrowUp';
@@ -11,7 +12,7 @@ import TextIcon from './img/Text';
 import MultiIcon from './img/Multi';
 import HashIcon from './img/Hash';
 import PlusIcon from './img/Plus';
-import { ActionTypes, DataTypes, shortId } from './utils';
+import { ActionTypes, DataTypes, shortId, UTIL_COL } from './utils';
 
 // function getPropertyIcon(dataType) {
 //   switch (dataType) {
@@ -30,6 +31,7 @@ export default function Header({
   column: { id, created, label, getResizerProps, getHeaderProps },
   theme,
   dataDispatch,
+  disabled
 }) {
   const [expanded, setExpanded] = useState(created || false);
   const [referenceElement, setReferenceElement] = useState(null);
@@ -37,7 +39,7 @@ export default function Header({
   const [inputRef, setInputRef] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'bottom',
-    strategy: 'absolute',
+    strategy: 'fixed',
   });
   const [header, setHeader] = useState(label);
   // eslint-disable-next-line no-unused-vars
@@ -187,7 +189,7 @@ export default function Header({
   }
 
   function getHeader() {
-    if (id !== 999999) {
+    if (id !== UTIL_COL.id) {
       return (
         <>
           <div
@@ -196,7 +198,7 @@ export default function Header({
           >
             <div
               className={theme.thContent}
-              onClick={() => setExpanded(true)}
+              onClick={() => setExpanded(!disabled)}
               ref={setReferenceElement}
             >
               {/* <span className="svg-icon svg-gray icon-margin">
@@ -206,13 +208,14 @@ export default function Header({
             </div>
             <div {...getResizerProps()} className={theme.resizer} />
           </div>
-          {expanded && (
+          {expanded && !disabled && (
             <div className={theme.overlay} onClick={() => setExpanded(false)} />
           )}
-          {expanded && (
+          {expanded && !disabled && createPortal((
             <div
               ref={setPopperElement}
-              style={{ ...styles.popper, zIndex: 3 }}
+              className={theme.popper}
+              style={{ ...styles.popper }}
               {...attributes.popper}
             >
               <div
@@ -312,11 +315,13 @@ export default function Header({
                 </div>
               </div>
             </div>
-          )}
+          ), document.body)}
         </>
       );
     }
+    if (disabled) return null;
     return (
+      // 添加列
       <div
         {...getHeaderProps()}
         className={`${theme.th} noselect d-inline-block`}
@@ -330,7 +335,7 @@ export default function Header({
           onClick={() =>
             dataDispatch({
               type: ActionTypes.ADD_COLUMN_TO_LEFT,
-              columnId: 999999,
+              columnId: UTIL_COL.id,
               focus: true,
             })
           }

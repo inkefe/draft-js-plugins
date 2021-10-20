@@ -14,7 +14,6 @@ import Cell from './Cell';
 import Header from './Header';
 import PlusIcon from './img/Plus';
 import { randomColor, shortId, ActionTypes, DataTypes } from './utils';
-// import './style.css';
 // import { FixedSizeList } from 'react-window';
 // import scrollbarWidth from './scrollbarWidth';
 
@@ -32,6 +31,7 @@ export default function Table({
   dispatch: dataDispatch,
   skipReset,
   theme,
+  disabled,
 }) {
   const sortTypes = useMemo(
     () => ({
@@ -88,7 +88,7 @@ export default function Table({
             const props = cell.getCellProps();
             return (
               <div {...props} className={theme.tableCell}>
-                {cell.render('Cell', { theme })}
+                {cell.render('Cell', { theme, disabled, value: cell.row.original[cell.column.id] || '' })}
               </div>
             );
           })}
@@ -127,7 +127,7 @@ export default function Table({
             >
               {headerGroup.headers.map(column => (
                 <React.Fragment key={column.id}>
-                  {column.render('Header', { theme })}
+                  {column.render('Header', { theme, disabled })}
                 </React.Fragment>
               ))}
             </div>
@@ -143,18 +143,20 @@ export default function Table({
           >
             {RenderRow}
           </FixedSizeList> */}
-          <div
-            className={`tr ${theme.addRow}`}
-            style={{ width: `${totalColumnsWidth}px` }}
-            onClick={() => dataDispatch({ type: ActionTypes.ADD_ROW })}
-          >
-            <div style={{ position: 'sticky', left: '4px' }}>
-              <span className="svg-icon svg-gray icon-margin">
-                <PlusIcon />
-              </span>
-              添加行
+          {
+            !disabled && <div
+              className={`tr ${theme.addRow}`}
+              style={{ width: `${totalColumnsWidth}px` }}
+              onClick={() => dataDispatch({ type: ActionTypes.ADD_ROW })}
+            >
+              <div style={{ position: 'sticky', left: '4px' }}>
+                <span className="svg-icon svg-gray icon-margin">
+                  <PlusIcon />
+                </span>
+                添加行
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     </>
@@ -163,6 +165,8 @@ export default function Table({
 
 export function reducer(state, action) {
   switch (action.type) {
+    case ActionTypes.UPDATE:
+      return action.data;
     case ActionTypes.ADD_OPTION_TO_COLUMN:
       const optionIndex = state.columns.findIndex(
         column => column.id === action.columnId
@@ -185,7 +189,7 @@ export function reducer(state, action) {
     case ActionTypes.ADD_ROW:
       return update(state, {
         skipReset: { $set: true },
-        data: { $push: [{ ID: shortId() }] },
+        data: { $push: [{ id: shortId() }] },
       });
     case ActionTypes.DELETE_ROW:
       return update(state, {

@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { css } from 'linaria';
 
 export const defaultTheme = {
@@ -66,6 +67,7 @@ export const defaultTheme = {
     border-bottom: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
     position: relative;
+    min-height: 38px;
     &:last-child {
       border-right: 0;
     }
@@ -113,15 +115,18 @@ export const defaultTheme = {
       background-color: #8ecae6;
     }
   `,
+  tr: css`
+    &:last-child .${defaultTheme.tableCell} {
+      border-bottom: 0;
+    }
+  `,
   tableBody: css`
-    .${this.tr}:hover {
+    .${defaultTheme.tr}:hover {
       background-color: rgb(243, 248, 253);
     }
   `,
-  tr: css`
-    &:last-child .${this.tableCell} {
-      border-bottom: 0;
-    }
+  popper: css`
+    z-index: 33;
   `,
   th: css`
     color: #9e9e9e;

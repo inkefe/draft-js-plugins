@@ -49,13 +49,6 @@ export function makeData(count = 5, columns_counts = 4) {
       options: [],
     });
   }
-  columns.push({
-    id: 999999,
-    width: 20,
-    label: '+',
-    disableResizing: true,
-    dataType: DataTypes.UTIL,
-  });
 
   // let columns = [
   //   {
@@ -101,6 +94,13 @@ export function makeData(count = 5, columns_counts = 4) {
   // ];
   return { columns, data, skipReset: false };
 }
+export const UTIL_COL = Object.freeze({
+  id: 999999,
+  width: 20,
+  label: '+',
+  disableResizing: true,
+  dataType: DataTypes.UTIL,
+});
 
 export const ActionTypes = Object.freeze({
   ADD_OPTION_TO_COLUMN: 'add_option_to_column',
@@ -113,4 +113,5 @@ export const ActionTypes = Object.freeze({
   ADD_COLUMN_TO_RIGHT: 'add_column_to_right',
   DELETE_COLUMN: 'delete_column',
   ENABLE_RESET: 'enable_reset',
+  UPDATE: 'update_all_data',
 });

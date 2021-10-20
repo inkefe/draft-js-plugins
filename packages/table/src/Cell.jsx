@@ -26,6 +26,7 @@ export default function Cell({
   row: { index },
   column: { id, dataType, options },
   dataDispatch,
+  disabled,
 }) {
   const [value, setValue] = useState({ value: initialValue, update: false });
   const [selectRef, setSelectRef] = useState(null);
@@ -90,22 +91,16 @@ export default function Cell({
       deleteIndex,
     });
   };
-  const [_value, setOldValue] = useState(null);
+  // const [_value, setOldValue] = useState('');
 
-  const onBlur = useCallback(
-    () =>
-      setValue(old => {
-        if (_value === old.value) return { value: old.value, update: false };
-        setOldValue(old.value);
-        return { value: old.value, update: true };
-      }),
-    [_value]
-  );
+  const onBlur = () => setValue(old => ({ value: old.value, update: true }));
+
   function getCellElement() {
     switch (dataType) {
       case DataTypes.TEXT:
         return (
           <ContentEditable
+            disabled={disabled}
             html={(value.value && value.value.toString()) || ''}
             onChange={onChange}
             onBlur={onBlur}
