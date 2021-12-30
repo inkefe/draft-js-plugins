@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from 'react';
-// import { isEqualWith, isEqual } from 'lodash';
 import Table, { reducer } from './Table';
 import { ActionTypes, makeData, UTIL_COL } from './utils.js';
 import { defaultTheme } from './theme';
@@ -22,6 +21,7 @@ function App(props) {
   }, [data]);
 
 
+  // eslint-disable-next-line consistent-return
   return (
     <Table
       columns={disabled ? state.columns : [...state.columns, UTIL_COL]}

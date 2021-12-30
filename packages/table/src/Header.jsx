@@ -209,7 +209,9 @@ export default function Header({
             <div {...getResizerProps()} className={theme.resizer} />
           </div>
           {expanded && !disabled && (
-            <div className={theme.overlay} onClick={() => setExpanded(false)} />
+            createPortal(
+              <div className={theme.overlay} onClick={() => setExpanded(false)} />,
+              document.body)
           )}
           {expanded && !disabled && createPortal((
             <div

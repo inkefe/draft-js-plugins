@@ -13,7 +13,7 @@ export const TypeLabel = Object.freeze({
 });
 
 export function shortId() {
-  return Math.random().toString(36).substr(2, 6);
+  return Math.random().toString(36).substr(2, 7);
 }
 
 export function randomColor() {

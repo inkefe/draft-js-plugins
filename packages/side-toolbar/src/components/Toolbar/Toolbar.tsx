@@ -6,10 +6,10 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+import { EditorState } from 'draft-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey';
-import { EditorState } from 'draft-js';
 import _throttle from 'lodash/throttle';
 import {
   HeadlineOneButton,

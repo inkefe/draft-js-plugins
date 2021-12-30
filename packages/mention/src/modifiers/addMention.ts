@@ -1,4 +1,4 @@
-import { Modifier, EditorState } from 'draft-js';
+import { Modifier, EditorState, genKey } from 'draft-js';
 import { MentionData } from '..';
 import getSearchText from '../utils/getSearchText';
 import getTypeByTrigger from '../utils/getTypeByTrigger';
@@ -14,6 +14,7 @@ export default function addMention(
     .getCurrentContent()
     .createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {
       mention,
+      key: genKey(),
     });
   const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 

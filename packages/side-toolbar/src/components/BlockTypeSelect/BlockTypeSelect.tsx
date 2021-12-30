@@ -90,8 +90,7 @@ export default function BlockTypeSelect({
 
   const onMouseEnter = useCallback(
     (e) => {
-      if (referenceElement?.contains(e.nativeEvent.fromElement))
-        setVisible(true);
+      if (referenceElement?.contains(e.nativeEvent.target)) setVisible(true);
     },
     [referenceElement]
   );
