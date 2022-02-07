@@ -128,6 +128,7 @@ function keyBindingFnHook(
       result = plugin.keyBindingFn(event, pluginMethods);
       return result !== undefined;
     });
+    // @ts-ignore
     return wasHandled ? result : null;
   };
 }

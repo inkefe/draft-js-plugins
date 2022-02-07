@@ -5,6 +5,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## To Be Released
 
+### Fixed
+
+- Add Japanese symbol to default regExp
+
+## 5.1.0
+
+- Use current inline style for mention [#2414](https://github.com/draft-js-plugins/draft-js-plugins/issues/2414)
+
+## 5.0.0
+
+- reset selected item on search change for mention suggestion [#2348](https://github.com/draft-js-plugins/draft-js-plugins/issues/2348)
+- add `selectMention` to `EntryComponentProps` [#2363](https://github.com/draft-js-plugins/draft-js-plugins/issues/2363)
+
 ## 4.6.1
 
 - delay scrolling into view for selected item in mention list [#2233](https://github.com/draft-js-plugins/draft-js-plugins/issues/2233)
@@ -235,7 +248,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- The config now takes a property `entityMutability`. A developer can choose between 'IMMUTABLE', 'SEGMENTED' & 'MUTABLE'. Read in detail about it [here](https://facebook.github.io/draft-js/docs/advanced-topics-entities.html#mutability).
+- The config now takes a property `entityMutability`. A developer can choose between 'IMMUTABLE', 'SEGMENTED' & 'MUTABLE'. Read in detail about it [here](https://draftjs.org/docs/advanced-topics-entities/#mutability).
 - The config now takes a property `positionSuggestions`. The function can be used to manipulate the position of the popover containing the suggestions. It receives one object as arguments containing the visible rectangle surrounding the decorated search string including the @. In addition the object contains prevProps, prevState, state & props. An object should be returned which can contain all sorts of styles. The defined properties will be applied as inline-styles.
 - Introduce a new config property: `mentionPrefix`. By default it is an empty String. For Twitter or Slack like mention behaviour you can provide an `@`.
 

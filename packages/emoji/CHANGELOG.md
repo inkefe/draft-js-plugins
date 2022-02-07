@@ -5,7 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## To be released
 
+- upgrade to `emojibase@6`
+
 ### Added
+
+- added Support header-menu position customization for emoji picker to have "top/Bottom" position
+- You can find more details [here](https://github.com/draft-js-plugins/draft-js-plugins/pull/2433)
 
 ## 4.5.5
 

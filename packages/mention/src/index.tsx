@@ -227,7 +227,9 @@ export default (
     keyBindingFn: (keyboardEvent) =>
       callbacks.keyBindingFn && callbacks.keyBindingFn(keyboardEvent),
     handleReturn: (keyboardEvent) =>
-      callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),
+      callbacks.handleReturn
+        ? callbacks.handleReturn(keyboardEvent)
+        : undefined,
     onChange: (editorState) => {
       if (callbacks.onChange) {
         return callbacks.onChange(editorState);
