@@ -1,6 +1,6 @@
 {
   "name": "@draft-js-plugins/editor",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "sideEffects": false,
   "description": "Editor for DraftJS Plugins",
   "author": {
@@ -45,7 +45,7 @@
     "react": "^16.3.0 || ^17.0.0"
   },
   "devDependencies": {
-    "@types/draft-js": "^0.11.8"
+    "@types/draft-js": "^0.11.9"
   },
   "publishConfig": {
     "access": "public"
